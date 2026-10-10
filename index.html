@@ -1,0 +1,1331 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>District 5 Running Costs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Sans+3:wght@400;600&display=swap">
+
+<style>
+/* ---------- tokens: light is the base, both dark paths redefine only these ---------- */
+:root{
+  --bg:#F2F4F3; --surface:#FCFCFB; --surface-2:#EDF0EE; --sunk:#E6EAE8;
+  --ink:#12201C; --ink-2:#5A6B65; --line:#DAE1DE; --line-2:#C6D0CC;
+  --accent:#0E6F5C; --warn:#A9690B; --warn-bg:#FBF2E1; --crit:#A8372A; --crit-bg:#FBEDEB;
+  --s1:#0072B2; --s2:#D55E00; --s3:#009E73; --s4:#B05089;
+  --shadow:0 1px 2px rgba(18,32,28,.06), 0 8px 24px -16px rgba(18,32,28,.25);
+  --focus:#0E6F5C; --veil:rgba(10,20,17,.58);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0E1413; --surface:#17201E; --surface-2:#1E2926; --sunk:#121A18;
+    --ink:#E7EEEB; --ink-2:#93A49E; --line:#253230; --line-2:#31403C;
+    --accent:#3FBFA0; --warn:#E0A64A; --warn-bg:#241D0F; --crit:#E0705E; --crit-bg:#2A1614;
+    --s1:#3E93D4; --s2:#DE7430; --s3:#0B8A66; --s4:#CE7BAC;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.8);
+    --focus:#3FBFA0; --veil:rgba(0,0,0,.66);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0E1413; --surface:#17201E; --surface-2:#1E2926; --sunk:#121A18;
+  --ink:#E7EEEB; --ink-2:#93A49E; --line:#253230; --line-2:#31403C;
+  --accent:#3FBFA0; --warn:#E0A64A; --warn-bg:#241D0F; --crit:#E0705E; --crit-bg:#2A1614;
+  --s1:#3E93D4; --s2:#DE7430; --s3:#0B8A66; --s4:#CE7BAC;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.8);
+  --focus:#3FBFA0; --veil:rgba(0,0,0,.66);
+}
+
+*{box-sizing:border-box}
+body{
+  background:var(--bg); color:var(--ink);
+  font:400 16px/1.55 "Source Sans 3", ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1180px; margin:0 auto; padding:34px 24px 80px}
+h1,h2,h3{font-family:Archivo, ui-sans-serif, system-ui, sans-serif; text-wrap:balance; margin:0}
+.mono{font-family:"IBM Plex Mono", ui-monospace, monospace; font-variant-numeric:tabular-nums}
+:focus-visible{outline:2px solid var(--focus); outline-offset:2px; border-radius:3px}
+
+.eyebrow{
+  font-family:"IBM Plex Mono", monospace; font-size:11px; font-weight:500;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--ink-2);
+}
+.masthead{display:flex; flex-wrap:wrap; gap:20px; align-items:flex-end;
+  justify-content:space-between; padding-bottom:22px; border-bottom:2px solid var(--ink)}
+.masthead h1{font-size:clamp(28px,4.1vw,44px); font-weight:800; letter-spacing:-.022em; line-height:1.04; margin-top:9px}
+.standfirst{color:var(--ink-2); max-width:58ch; margin:11px 0 0; font-size:16.5px}
+.tools{display:flex; gap:8px; flex-wrap:wrap}
+.themer{
+  background:none; border:1px solid var(--line-2); color:var(--ink-2); cursor:pointer;
+  font:500 11px/1 "IBM Plex Mono",monospace; letter-spacing:.1em; text-transform:uppercase;
+  padding:8px 13px; border-radius:100px; white-space:nowrap;
+}
+.themer:hover{color:var(--ink); border-color:var(--ink-2)}
+.themer.lead{color:var(--accent); border-color:color-mix(in srgb, var(--accent) 55%, transparent)}
+.themer.lead:hover{color:var(--surface); background:var(--accent); border-color:var(--accent)}
+
+.scenarios{display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:22px 0 26px}
+.scenarios .eyebrow{margin-right:4px}
+.chip{
+  font:600 13.5px/1 "Source Sans 3",sans-serif; cursor:pointer;
+  background:var(--surface); color:var(--ink-2);
+  border:1px solid var(--line-2); border-radius:100px; padding:9px 15px;
+}
+.chip:hover{border-color:var(--ink-2); color:var(--ink)}
+.chip[aria-pressed="true"]{background:var(--ink); color:var(--bg); border-color:var(--ink)}
+.chip b{font-family:"IBM Plex Mono",monospace; font-weight:500; opacity:.72; margin-left:7px; font-size:12px}
+
+.headline{
+  display:grid; grid-template-columns:minmax(230px,1.15fr) repeat(3,minmax(120px,.72fr));
+  gap:1px; background:var(--line); border:1px solid var(--line);
+  border-radius:12px; overflow:hidden; box-shadow:var(--shadow); margin-bottom:26px;
+}
+.cell{background:var(--surface); padding:19px 21px}
+.cell.lead{background:var(--ink); color:var(--bg)}
+.cell.lead .eyebrow{color:var(--bg); opacity:.62}
+.cell.lead .eyebrow .info{opacity:1}
+.big{font-family:Archivo,sans-serif; font-weight:800; font-size:clamp(38px,5.6vw,54px);
+  letter-spacing:-.03em; line-height:1; display:block; margin:9px 0 5px; font-variant-numeric:tabular-nums}
+.cell .val{font-family:Archivo,sans-serif; font-weight:700; font-size:25px; letter-spacing:-.02em;
+  display:block; margin:9px 0 3px; font-variant-numeric:tabular-nums}
+.cell .note{font-size:13px; color:var(--ink-2); line-height:1.35}
+.cell.lead .note{color:var(--bg); opacity:.66}
+
+.alert{
+  display:none; align-items:flex-start; gap:11px; margin-bottom:26px;
+  border:1px solid var(--crit); border-left-width:4px; background:var(--crit-bg);
+  border-radius:10px; padding:15px 18px; font-size:14.5px;
+}
+.alert.on{display:flex}
+.alert b{color:var(--crit)}
+
+.grid{display:grid; grid-template-columns:352px minmax(0,1fr); gap:26px; align-items:start}
+@media (max-width:940px){ .grid{grid-template-columns:1fr} .headline{grid-template-columns:1fr 1fr} }
+@media (max-width:460px){ .headline{grid-template-columns:1fr} }
+
+.panel{background:var(--surface); border:1px solid var(--line); border-radius:12px; box-shadow:var(--shadow)}
+.panel > h2{
+  font-size:13px; font-weight:700; letter-spacing:.07em; text-transform:uppercase;
+  padding:15px 19px; border-bottom:1px solid var(--line); color:var(--ink);
+}
+.rail{position:sticky; top:18px}
+@media (max-width:940px){ .rail{position:static} }
+.legendline{padding:11px 19px 12px; border-bottom:1px solid var(--line); font-size:12.5px;
+  color:var(--ink-2); display:flex; flex-wrap:wrap; gap:4px 14px; align-items:center}
+.legendline .tag{margin-left:0; margin-right:5px}
+
+.group{border-bottom:1px solid var(--line); padding:16px 19px}
+.group:last-child{border-bottom:0}
+.group > h3{font-size:11px; font-weight:700; letter-spacing:.13em; text-transform:uppercase;
+  color:var(--ink-2); margin-bottom:13px; font-family:"IBM Plex Mono",monospace}
+.ctl{margin-bottom:15px}
+.ctl:last-child{margin-bottom:0}
+.ctl-top{display:flex; justify-content:space-between; align-items:baseline; gap:10px; margin-bottom:6px}
+.lab{display:inline-flex; align-items:center; flex-wrap:wrap; min-width:0}
+.ctl label{font-size:14.5px; font-weight:600}
+.ctl output{font-family:"IBM Plex Mono",monospace; font-size:13.5px; font-weight:600;
+  color:var(--accent); font-variant-numeric:tabular-nums; white-space:nowrap}
+.hint{font-size:12.5px; color:var(--ink-2); line-height:1.4; margin-top:5px}
+.hint b{color:var(--ink); font-weight:600}
+.tag{
+  display:inline-block; font-family:"IBM Plex Mono",monospace; font-size:9.5px; font-weight:600;
+  letter-spacing:.09em; text-transform:uppercase; padding:2px 6px; border-radius:3px;
+  vertical-align:1.5px; margin-left:6px;
+}
+.tag.m{background:color-mix(in srgb, var(--accent) 15%, transparent); color:var(--accent)}
+.tag.a{background:var(--sunk); color:var(--ink-2)}
+
+input[type=range]{ -webkit-appearance:none; appearance:none; width:100%; height:20px; background:none; cursor:pointer; margin:0 }
+input[type=range]::-webkit-slider-runnable-track{height:4px; border-radius:2px; background:var(--sunk)}
+input[type=range]::-moz-range-track{height:4px; border-radius:2px; background:var(--sunk)}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none; width:16px; height:16px; border-radius:50%;
+  background:var(--accent); border:2px solid var(--surface); margin-top:-6px;
+  box-shadow:0 0 0 1px var(--line-2);
+}
+input[type=range]::-moz-range-thumb{
+  width:16px; height:16px; border-radius:50%; background:var(--accent);
+  border:2px solid var(--surface); box-shadow:0 0 0 1px var(--line-2);
+}
+select{
+  width:100%; font:500 13.5px/1.35 "IBM Plex Mono",monospace; color:var(--ink);
+  background:var(--surface-2); border:1px solid var(--line-2);
+  border-radius:6px; padding:8px 9px;
+}
+.checkrow{display:flex; align-items:flex-start; gap:2px}
+.checkrow .info{margin-top:2px}
+.check{display:flex; gap:9px; align-items:flex-start; cursor:pointer}
+.check input{margin:3px 0 0; accent-color:var(--accent); width:15px; height:15px; flex:none}
+.check span{font-size:14px; font-weight:600}
+
+/* ---------- folded sections: technical detail, one tap away ---------- */
+details.fold{margin-top:15px; border-top:1px dashed var(--line-2)}
+details.fold > summary{
+  list-style:none; cursor:pointer; display:flex; align-items:center; gap:9px; padding:12px 0 1px;
+  font:600 11px/1.3 "IBM Plex Mono",monospace; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--ink-2); border-radius:4px;
+}
+details.fold > summary::-webkit-details-marker{display:none}
+details.fold > summary::before{
+  content:""; flex:none; width:6px; height:6px; margin:0 2px 0 2px;
+  border-right:1.5px solid currentColor; border-bottom:1.5px solid currentColor;
+  transform:rotate(-45deg); transition:transform .15s ease;
+}
+details.fold[open] > summary::before{transform:rotate(45deg); margin-top:-3px}
+details.fold > summary:hover{color:var(--ink)}
+details.fold > summary .count{margin-left:auto; font-weight:500; letter-spacing:.06em; opacity:.8; white-space:nowrap}
+details.fold > .fold-body{padding-top:14px}
+details.fold.mini{margin-top:4px; border-top:0}
+details.fold.mini > summary{padding-top:4px; color:var(--accent)}
+details.fold.mini > summary:hover{color:var(--ink)}
+details.fold.mini > .fold-body{padding-top:9px}
+
+/* ---------- chart ---------- */
+figure{margin:0; padding:19px}
+.figcap{display:flex; justify-content:space-between; align-items:baseline; gap:14px; flex-wrap:wrap; margin-bottom:3px}
+.figcap h3{font-size:17px; font-weight:700; letter-spacing:-.012em}
+.figsub{font-size:13.5px; color:var(--ink-2); margin:2px 0 15px; max-width:66ch}
+.legend{display:flex; flex-wrap:wrap; gap:7px 16px; margin-top:13px}
+.lg{display:flex; align-items:center; gap:7px; font-size:13px; color:var(--ink-2)}
+.sw{width:11px; height:11px; border-radius:3px; flex:none}
+.lg b{color:var(--ink); font-weight:600; font-family:"IBM Plex Mono",monospace;
+  font-size:12.5px; font-variant-numeric:tabular-nums}
+.chartbox{position:relative}
+svg.chart{display:block; width:100%; height:auto; overflow:visible}
+svg.chart text{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums}
+.tip{
+  position:absolute; pointer-events:none; opacity:0; transition:opacity .09s;
+  background:var(--ink); color:var(--bg); border-radius:7px; padding:9px 11px;
+  font:500 12px/1.5 "IBM Plex Mono",monospace; white-space:nowrap;
+  box-shadow:0 6px 20px -6px rgba(0,0,0,.45); z-index:5; transform:translate(-50%,-100%);
+}
+.tip.on{opacity:1}
+.tip .th{font-weight:600; margin-bottom:5px; font-size:12.5px}
+.tip .tr{display:flex; justify-content:space-between; gap:14px}
+.tip .tr i{width:8px;height:8px;border-radius:2px;display:inline-block;margin-right:6px}
+.tip .tt{border-top:1px solid rgba(255,255,255,.22); margin-top:5px; padding-top:5px; font-weight:600}
+
+/* ---------- text vs voice ---------- */
+.split{display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line)}
+@media (max-width:620px){ .split{grid-template-columns:1fr} }
+.kind{background:var(--surface); padding:18px 21px}
+.kind h4{font-family:Archivo,sans-serif; font-size:15px; font-weight:700; margin:0 0 2px;
+  display:flex; align-items:center; gap:8px}
+.kind h4 .info{margin-left:-2px}
+.kind .amt{font-family:Archivo,sans-serif; font-weight:800; font-size:31px; letter-spacing:-.025em;
+  display:block; margin:10px 0 2px; font-variant-numeric:tabular-nums}
+.kind .of{font-size:12.5px; color:var(--ink-2)}
+.kind details.fold{margin-top:12px}
+.kind dl{margin:0; font-size:13px; display:grid; grid-template-columns:1fr auto; gap:5px 12px}
+.kind dt{color:var(--ink-2); display:flex; align-items:center}
+.kind dd{margin:0; font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums; text-align:right}
+.pill{font-family:"IBM Plex Mono",monospace; font-size:10px; font-weight:600; letter-spacing:.08em;
+  text-transform:uppercase; padding:3px 7px; border-radius:100px; background:var(--sunk); color:var(--ink-2)}
+.pill.up{background:color-mix(in srgb, var(--warn) 18%, transparent); color:var(--warn)}
+
+.tablewrap{overflow-x:auto}
+table{width:100%; border-collapse:collapse; font-size:14.5px}
+th,td{text-align:right; padding:11px 13px; border-bottom:1px solid var(--line); white-space:nowrap}
+th:first-child, td:first-child{text-align:left; white-space:normal}
+thead th{
+  font:600 10.5px/1 "IBM Plex Mono",monospace; letter-spacing:.11em; text-transform:uppercase;
+  color:var(--ink-2); padding-top:14px; padding-bottom:9px;
+}
+tbody td{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums}
+tbody td:first-child{font-family:"Source Sans 3",sans-serif; font-weight:600}
+tr.sub td{border-bottom:0; padding-top:0; padding-bottom:5px; color:var(--ink-2); font-size:13px}
+tr.sub td:first-child{font-weight:400; padding-left:34px}
+tr.sub + tr:not(.sub) td{border-top:1px solid var(--line)}
+.what{display:block; font-family:"Source Sans 3",sans-serif; font-weight:400; font-size:12.5px; color:var(--ink-2); margin-top:2px; white-space:normal}
+.bar{position:relative; width:104px; height:7px; border-radius:100px; background:var(--sunk); overflow:hidden; display:inline-block; vertical-align:middle}
+.bar i{position:absolute; inset:0 auto 0 0; border-radius:100px}
+tfoot td{font-weight:700; border-top:2px solid var(--ink); border-bottom:0; font-size:15.5px; padding-top:13px}
+tfoot td:first-child{font-family:Archivo,sans-serif}
+.dot{width:9px;height:9px;border-radius:2.5px;display:inline-block;margin-right:8px;vertical-align:.5px}
+
+.cliff{
+  margin-top:26px; border:1px solid var(--warn); border-left-width:4px;
+  background:var(--warn-bg); border-radius:10px; padding:19px 21px;
+}
+.cliff h3{font-size:16.5px; color:var(--warn); margin-bottom:7px}
+.cliff p{margin:0 0 9px; font-size:14.5px; max-width:78ch}
+.cliff p:last-child{margin-bottom:0}
+.cliff .mono{color:var(--ink); font-weight:600}
+
+.notes{margin-top:26px; display:grid; grid-template-columns:repeat(auto-fit,minmax(272px,1fr)); gap:1px;
+  background:var(--line); border:1px solid var(--line); border-radius:12px; overflow:hidden}
+.note-card{background:var(--surface); padding:19px 21px}
+.note-card h3{font-size:12px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; margin-bottom:11px}
+.note-card h3 + details.fold.mini{margin-top:-6px}
+.note-card ul{margin:0; padding-left:17px; font-size:14px; color:var(--ink-2); line-height:1.6}
+.note-card li{margin-bottom:7px}
+.note-card li:last-child{margin-bottom:0}
+.note-card b{color:var(--ink); font-weight:600}
+.excl{font-size:14px; color:var(--ink-2); margin:0; line-height:1.6}
+.foot{margin-top:24px; font-size:12.5px; color:var(--ink-2); text-align:center}
+
+/* ---------- plain-language help: the i buttons and what they open ---------- */
+.info{
+  position:relative; display:inline-grid; place-items:center; flex:none;
+  width:17px; height:17px; margin:0 0 0 6px; padding:0; vertical-align:1px;
+  border-radius:50%; border:1px solid var(--line-2); background:var(--surface); color:var(--ink-2);
+  font:italic 700 11px/1 Georgia, "Times New Roman", serif; letter-spacing:0; text-transform:none;
+  cursor:pointer; transition:background .12s, color .12s, border-color .12s;
+}
+.info::after{content:""; position:absolute; inset:-7px; border-radius:50%}  /* a finger-sized target */
+.info:hover, .info[aria-expanded="true"]{background:var(--accent); border-color:var(--accent); color:var(--surface)}
+.cell.lead .info{background:transparent; color:var(--bg); border-color:color-mix(in srgb, var(--bg) 50%, transparent)}
+.cell.lead .info:hover, .cell.lead .info[aria-expanded="true"]{background:var(--bg); color:var(--ink); border-color:var(--bg)}
+.masthead h1 .info{width:22px; height:22px; font-size:14px; vertical-align:.5em; margin-left:10px}
+.info-mark{display:inline-grid; place-items:center; width:17px; height:17px; border-radius:50%;
+  border:1px solid var(--line-2); color:var(--ink-2); vertical-align:-3px;
+  font:italic 700 11px/1 Georgia, "Times New Roman", serif}
+.pop{
+  position:fixed; z-index:30; width:max-content; max-width:min(340px, calc(100vw - 32px));
+  background:var(--ink); color:var(--bg); border-radius:10px; padding:13px 15px 14px;
+  box-shadow:0 14px 34px -12px rgba(0,0,0,.55);
+  font:400 14.5px/1.5 "Source Sans 3", ui-sans-serif, system-ui, sans-serif;
+}
+.pop h4{margin:0 28px 5px 0; font:700 14.5px/1.3 Archivo, ui-sans-serif, system-ui, sans-serif}
+.pop p{margin:0} .pop p + p{margin-top:7px}
+.pop b{font-weight:600}
+.pop .x{position:absolute; top:7px; right:7px; width:26px; height:26px; border:0; border-radius:50%;
+  background:transparent; color:inherit; opacity:.7; cursor:pointer; font:400 18px/1 system-ui, sans-serif}
+.pop .x:hover{opacity:1; background:color-mix(in srgb, var(--bg) 16%, transparent)}
+.sr{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap}
+
+/* ---------- the guided tour ---------- */
+.tour-veil{position:fixed; inset:0; z-index:40}
+.tour-hole{
+  position:fixed; z-index:41; pointer-events:none; border-radius:12px;
+  box-shadow:0 0 0 3px var(--accent), 0 0 0 200vmax var(--veil);
+  transition:top .34s ease, left .34s ease, width .34s ease, height .34s ease, border-radius .34s ease;
+}
+.tour-card{
+  position:fixed; z-index:42; width:min(360px, calc(100vw - 32px)); padding:17px 18px 15px;
+  background:var(--surface); color:var(--ink); border:1px solid var(--line); border-radius:14px;
+  box-shadow:0 24px 54px -18px rgba(0,0,0,.6); transition:top .34s ease, left .34s ease;
+}
+.tour-card:focus{outline:none}
+.tracking .tour-hole, .tracking .tour-card{transition:none}
+.tour-meta{display:flex; align-items:center; gap:10px; color:var(--ink-2);
+  font:500 11px/1 "IBM Plex Mono",monospace; letter-spacing:.12em; text-transform:uppercase}
+.tour-prog{flex:1; height:3px; border-radius:3px; background:var(--sunk); overflow:hidden}
+.tour-prog i{display:block; height:100%; background:var(--accent); transition:width .34s ease}
+.tour-card h3{font-size:19px; font-weight:800; letter-spacing:-.015em; margin:12px 0 6px}
+.tour-card p{margin:0; font-size:15px; color:var(--ink-2); line-height:1.5}
+.tour-card p b{color:var(--ink); font-weight:600}
+.tour-acts{display:flex; align-items:center; gap:8px; margin-top:16px}
+.tbtn{font:600 14px/1 "Source Sans 3",sans-serif; border-radius:100px; padding:9px 15px; cursor:pointer;
+  border:1px solid var(--line-2); background:var(--surface); color:var(--ink)}
+.tbtn:hover{border-color:var(--ink-2)}
+.tbtn.go{background:var(--accent); border-color:var(--accent); color:var(--surface)}
+.tbtn.go:hover{filter:brightness(1.08)}
+.tbtn.skip{margin-right:auto; border:0; background:none; padding-left:0; color:var(--ink-2)}
+.tbtn.skip:hover{color:var(--ink)}
+@media (prefers-reduced-motion:reduce){ *{transition:none!important} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <div>
+      <div class="eyebrow">District 5 · New Cairo · WhatsApp concierge</div>
+      <p class="eyebrow" style="margin:4px 0 0;opacity:.8;text-transform:none;letter-spacing:0">Cost estimate by the assistant's developer · not published by District 5</p>
+      <h1>What the bot costs to run<button class="info" data-info="page"></button></h1>
+      <p class="standfirst">Every line we pay for, as one monthly number you can move. Token counts
+        and call mix are measured from this bot's own logs; traffic is yours to set.</p>
+    </div>
+    <div class="tools">
+      <button class="themer lead" id="tourBtn" type="button">Take the tour</button>
+      <button class="themer" id="themer" type="button">Theme</button>
+    </div>
+  </header>
+
+  <div class="scenarios" id="scen">
+    <span class="eyebrow">Scenario<button class="info" data-info="scenario"></button></span>
+    <button class="chip" data-m="25"   type="button">Pilot <b>25/day</b></button>
+    <button class="chip" data-m="150"  type="button">Steady <b>150/day</b></button>
+    <button class="chip" data-m="400"  type="button">Busy <b>400/day</b></button>
+    <button class="chip" data-m="1200" type="button">Eid peak <b>1200/day</b></button>
+  </div>
+
+  <section class="headline" id="headline">
+    <div class="cell lead" id="leadCell">
+      <span class="eyebrow">Monthly total<button class="info" data-info="total"></button></span>
+      <span class="big" id="kTotal">$91</span>
+      <span class="note" id="kEgp">≈ EGP 4,354 at 48.0/USD</span>
+    </div>
+    <div class="cell">
+      <span class="eyebrow">Per message<button class="info" data-info="perMsg"></button></span>
+      <span class="val" id="kPer">$0.0199</span>
+      <span class="note">blended, incl. fixed fees</span>
+    </div>
+    <div class="cell">
+      <span class="eyebrow">Messages / month<button class="info" data-info="volume"></button></span>
+      <span class="val" id="kVol">4,560</span>
+      <span class="note" id="kMix">3,420 text · 1,140 voice</span>
+    </div>
+    <div class="cell">
+      <span class="eyebrow">Biggest line<button class="info" data-info="biggest"></button></span>
+      <span class="val" id="kBig">360dialog</span>
+      <span class="note" id="kBigNote">58% of the bill</span>
+    </div>
+  </section>
+
+  <div class="alert" id="alert">
+    <span>⚠</span>
+    <span><b>This model cannot hear voice notes.</b><button class="info" data-info="alertVoice"></button>
+      <span id="alertBody"></span></span>
+  </div>
+
+  <div class="grid">
+
+    <!-- ============ assumptions rail ============ -->
+    <aside class="panel rail" id="rail">
+      <h2>Assumptions<button class="info" data-info="assumptions"></button></h2>
+      <div class="legendline">
+        <span><span class="tag a">assumed</span>our best guess</span>
+        <span><span class="tag m">measured</span>from the bot's own records</span>
+      </div>
+
+      <div class="group">
+        <h3>Traffic<button class="info" data-info="grpTraffic"></button></h3>
+        <div class="ctl" id="ctlMsgs">
+          <div class="ctl-top"><span class="lab"><label for="msgs">Messages a day<span class="tag a">assumed</span></label>
+            <button class="info" data-info="msgs"></button></span>
+            <output id="oMsgs">150</output></div>
+          <input type="range" id="msgs" min="10" max="2000" step="10" value="150">
+          <p class="hint">Shopper messages received. The bot replies once to each.
+            <b>Nobody has measured this yet</b> — start at 150 for a mall of 190 tenants with
+            signage at five gates, then replace it with your first real month.</p>
+        </div>
+        <div class="ctl">
+          <div class="ctl-top"><span class="lab"><label for="voice">Sent as voice notes<span class="tag a">assumed</span></label>
+            <button class="info" data-info="voice"></button></span>
+            <output id="oVoice">25%</output></div>
+          <input type="range" id="voice" min="0" max="80" step="1" value="25">
+          <p class="hint">Voice is normal in Egyptian WhatsApp, so <b>25% is a fair opening bet</b> —
+            but it is a guess. The bot writes each note down, then answers it in text like a typed
+            question, so this changes the AI bill only.</p>
+        </div>
+        <div class="ctl">
+          <div class="ctl-top"><span class="lab"><label for="secs">Voice note length<span class="tag a">assumed</span></label>
+            <button class="info" data-info="secs"></button></span>
+            <output id="oSecs">15s</output></div>
+          <input type="range" id="secs" min="3" max="45" step="1" value="15">
+          <p class="hint">Audio bills at <b>32 tokens per second</b>, at double the text rate, but only
+            in the short call that writes the note down. The bot rejects anything over <b>45s</b> —
+            a 15s note is the realistic average.</p>
+        </div>
+        <div class="ctl">
+          <div class="ctl-top"><span class="lab"><label for="nums">WhatsApp numbers</label>
+            <button class="info" data-info="nums"></button></span><output id="oNums">1</output></div>
+          <input type="range" id="nums" min="1" max="5" step="1" value="1">
+          <p class="hint">Each number carries its own €49 fee <em>and</em> its own 1,000 free
+            service messages. <b>One is right</b> until a second brand needs its own identity.</p>
+        </div>
+      </div>
+
+      <div class="group">
+        <h3>AI<button class="info" data-info="grpAI"></button></h3>
+        <div class="ctl">
+          <div class="ctl-top"><span class="lab"><label for="model">Model</label>
+            <button class="info" data-info="model"></button></span></div>
+          <select id="model">
+            <option value="0.25|1.50|0.50|1" selected>Gemini 3.1 Flash Lite — $0.25/$1.50 · hears audio</option>
+            <option value="0.30|2.50|1.00|1">Gemini 2.5 Flash — $0.30/$2.50 · hears audio</option>
+            <option value="0.20|1.20|0|0">GPT-5.6 Luna — $0.20/$1.20 · text only</option>
+            <option value="0.75|4.50|0|0">GPT-5.4 Mini — $0.75/$4.50 · text only</option>
+            <option value="1.00|5.00|0|0">Claude Haiku 4.5 — $1.00/$5.00 · text only</option>
+          </select>
+          <p class="hint">Per 1M tokens in / out, live OpenRouter list prices.
+            <b>Flash Lite is the pick</b>: 73/73 on our held-out set, cheapest of the two that
+            can hear audio at all.</p>
+        </div>
+        <details class="fold" id="foldAI">
+          <summary>Technical AI settings <span class="count">4 · optional</span></summary>
+          <div class="fold-body">
+            <div class="ctl">
+              <div class="ctl-top"><span class="lab"><label for="tin">Context tokens / reply<span class="tag m">measured</span></label>
+                <button class="info" data-info="tin"></button></span>
+                <output id="oTin">7,600</output></div>
+              <input type="range" id="tin" min="2000" max="12000" step="10" value="7600">
+              <p class="hint">System prompt, retrieved directory and the visit so far, on every answer, typed or spoken.
+                <b>Input is ~97% of the AI bill</b> — trimming the prompt is the only lever that matters.</p>
+            </div>
+            <div class="ctl">
+              <div class="ctl-top"><span class="lab"><label for="web">Website-tool calls<span class="tag m">measured</span></label>
+                <button class="info" data-info="web"></button></span>
+                <output id="oWeb">8%</output></div>
+              <input type="range" id="web" min="0" max="40" step="1" value="8">
+              <p class="hint">These cost <b>18,000 tokens instead of 7,600</b> — 2.4× a normal reply.
+                Logs show 28% under deliberate probing; <b>8% is realistic</b> once the directory is complete.</p>
+            </div>
+            <div class="ctl">
+              <div class="ctl-top"><span class="lab"><label for="cache">Cache hit rate<span class="tag m">measured 0%</span></label>
+                <button class="info" data-info="cache"></button></span>
+                <output id="oCache">0%</output></div>
+              <input type="range" id="cache" min="0" max="60" step="1" value="0">
+              <p class="hint">Cached replies cost nothing, but <b>only text is cached</b> — voice
+                answers never are. It sits at <b>0% today</b> because almost every answer mentions opening hours.
+                <b>20% is reachable</b> if hours move out of the default reply.</p>
+            </div>
+            <div class="ctl">
+              <div class="ctl-top"><span class="lab"><label for="scope">Blocked off-topic<span class="tag m">measured</span></label>
+                <button class="info" data-info="scope"></button></span>
+                <output id="oScope">5%</output></div>
+              <input type="range" id="scope" min="0" max="25" step="1" value="5">
+              <p class="hint">Refused before the answer is written, so they are free when typed. A voice
+                note is screened once it has been written down, so it costs only that short call.</p>
+            </div>
+          </div>
+        </details>
+      </div>
+
+      <div class="group">
+        <h3>WhatsApp channel<button class="info" data-info="grpWA"></button></h3>
+        <div class="ctl">
+          <div class="ctl-top"><span class="lab"><label for="plan">360dialog plan</label>
+            <button class="info" data-info="plan"></button></span></div>
+          <select id="plan">
+            <option value="49" selected>Regular — €49 / number / month</option>
+            <option value="99">Premium — €99 (30-min SLA)</option>
+            <option value="500">Scale — €500 (1000 msg/sec)</option>
+            <option value="0">Direct with Meta — €0 (no BSP)</option>
+          </select>
+          <p class="hint"><b>Regular is the right pick.</b> Premium only buys a faster support SLA;
+            Scale buys throughput a mall will never need.</p>
+        </div>
+        <div class="ctl">
+          <div class="checkrow"><label class="check"><input type="checkbox" id="metaPaid" checked>
+            <span>Service messages are billable</span></label>
+            <button class="info" data-info="metaPaid"></button></div>
+          <p class="hint">Free until <b>30 Sep 2026</b>. From <b>1 Oct 2026</b> Meta charges Egypt's
+            $0.0036 rate beyond 1,000 free per number. Voice and text bill the same — only the
+            bot's reply counts. Untick to see today's bill.</p>
+        </div>
+        <div class="ctl">
+          <div class="checkrow"><label class="check"><input type="checkbox" id="vat" checked>
+            <span>Add 14% Egyptian VAT</span></label>
+            <button class="info" data-info="vat"></button></div>
+          <p class="hint">Applies to Meta's message fees.</p>
+        </div>
+      </div>
+
+      <div class="group">
+        <h3>Hosting (AWS)<button class="info" data-info="grpAWS"></button></h3>
+        <details class="fold" id="foldAWS" style="margin-top:0;border-top:0">
+          <summary>Server, web address and backups <span class="count">4 · optional</span></summary>
+          <div class="fold-body">
+            <div class="ctl">
+              <div class="ctl-top"><span class="lab"><label for="host">Compute</label>
+                <button class="info" data-info="host"></button></span></div>
+              <select id="host">
+                <option value="12|Lightsail 2 GB" selected>Lightsail 2 GB — $12/mo, all-in</option>
+                <option value="7|Lightsail 1 GB">Lightsail 1 GB — $7/mo, all-in</option>
+                <option value="24|Lightsail 4 GB">Lightsail 4 GB — $24/mo, all-in</option>
+                <option value="14.66|EC2 t4g.small">EC2 t4g.small on-demand + 30 GB gp3 — $14.66/mo</option>
+                <option value="9.57|EC2 t4g.small (1-yr)">EC2 t4g.small, 1-yr savings plan — $9.57/mo</option>
+                <option value="26.93|EC2 t4g.medium">EC2 t4g.medium on-demand + gp3 — $26.93/mo</option>
+              </select>
+              <p class="hint"><b>Lightsail 2 GB is the pick.</b> Bot, dashboard and the SQLite database
+                run on one box — there is no separate database bill — and the bundle already includes
+                60 GB SSD and 3 TB of transfer, so there is nothing to forget. Move to EC2 with a
+                savings plan only once the instance is permanent.</p>
+            </div>
+            <div class="ctl">
+              <div class="checkrow"><label class="check"><input type="checkbox" id="r53" checked>
+                <span>Route 53 hosted zone — $0.50/mo</span></label>
+                <button class="info" data-info="r53"></button></div>
+              <p class="hint">DNS for the dashboard. Queries at this volume round to nothing.</p>
+            </div>
+            <div class="ctl">
+              <div class="ctl-top"><span class="lab"><label for="snap">Snapshots / backups</label>
+                <button class="info" data-info="snap"></button></span><output id="oSnap">$2</output></div>
+              <input type="range" id="snap" min="0" max="15" step="1" value="2">
+              <p class="hint">Daily snapshot of the instance at $0.05/GB-month. <b>Do not set this to
+                zero</b> — the SQLite file is the whole directory.</p>
+            </div>
+            <div class="ctl">
+              <div class="ctl-top"><span class="lab"><label for="dom">Domain / year</label>
+                <button class="info" data-info="dom"></button></span><output id="oDom">$14</output></div>
+              <input type="range" id="dom" min="0" max="60" step="1" value="14">
+              <p class="hint">A <span class="mono">.com</span> through Route 53. TLS is free via Let's
+                Encrypt or ACM.</p>
+            </div>
+          </div>
+        </details>
+      </div>
+
+      <div class="group">
+        <h3>Exchange rates<button class="info" data-info="grpFX"></button></h3>
+        <div class="ctl">
+          <div class="ctl-top"><span class="lab"><label for="fx">EUR → USD</label>
+            <button class="info" data-info="fx"></button></span><output id="oFx">1.08</output></div>
+          <input type="range" id="fx" min="0.95" max="1.30" step="0.01" value="1.08">
+        </div>
+        <div class="ctl">
+          <div class="ctl-top"><span class="lab"><label for="egp">USD → EGP</label>
+            <button class="info" data-info="egp"></button></span><output id="oEgp">48.0</output></div>
+          <input type="range" id="egp" min="30" max="80" step="0.5" value="48">
+          <p class="hint">Display only. <b>Set today's rate</b> — this one moves.</p>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ============ results ============ -->
+    <main style="display:grid; gap:26px">
+
+      <section class="panel" id="oneMsg">
+        <h2>What one message costs<button class="info" data-info="oneMsg"></button></h2>
+        <div class="split">
+          <div class="kind">
+            <h4>Text<button class="info" data-info="text"></button> <span class="pill" id="pText">baseline</span></h4>
+            <span class="amt" id="aText">$0.0016</span>
+            <span class="of">AI cost of one text message</span>
+            <details class="fold mini">
+              <summary>How it's worked out</summary>
+              <div class="fold-body"><dl>
+                <dt>Context in<button class="info" data-info="ctxIn"></button></dt><dd id="dTextIn">8,432 tok</dd>
+                <dt>Reply out<button class="info" data-info="replyOut"></button></dt><dd id="dTextOut">46 tok</dd>
+                <dt>Reaches the model<button class="info" data-info="reach"></button></dt><dd id="dTextReach">95%</dd>
+              </dl></div>
+            </details>
+          </div>
+          <div class="kind">
+            <h4>Voice note<button class="info" data-info="voiceKind"></button> <span class="pill up" id="pVoice">+17%</span></h4>
+            <span class="amt" id="aVoice">$0.0019</span>
+            <span class="of" id="ofVoice">AI cost of one 15s voice note</span>
+            <details class="fold mini">
+              <summary>How it's worked out</summary>
+              <div class="fold-body"><dl>
+                <dt>Audio in (2× rate)<button class="info" data-info="audIn"></button></dt><dd id="dVoiceAud">480 tok</dd>
+                <dt>Writing it down<button class="info" data-info="writeDown"></button></dt><dd id="dVoiceTx">127 in · 60 out</dd>
+                <dt>Context in<button class="info" data-info="ctxIn"></button></dt><dd id="dVoiceIn">8,432 tok</dd>
+                <dt>Reply out<button class="info" data-info="replyOut"></button></dt><dd id="dVoiceOut">46 tok</dd>
+                <dt>Reaches the answer<button class="info" data-info="reach"></button></dt><dd id="dVoiceReach">95%</dd>
+              </dl></div>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" id="chartPanel">
+        <figure>
+          <div class="figcap">
+            <h3>Monthly cost as traffic grows<button class="info" data-info="chart"></button></h3>
+            <span class="eyebrow">marker = your setting</span>
+          </div>
+          <p class="figsub">Two fixed fees set the floor, and two variable ones climb from it.
+            The kink in the Meta band is the 1,000 free service messages running out.</p>
+          <div class="chartbox">
+            <svg class="chart" id="svg" viewBox="0 0 760 330" role="img"
+                 aria-label="Stacked area chart of monthly cost in US dollars against messages per day"></svg>
+            <div class="tip" id="tip"></div>
+          </div>
+          <div class="legend" id="legend"></div>
+        </figure>
+      </section>
+
+      <section class="panel" id="moneyTable">
+        <h2>Where the money goes<button class="info" data-info="table"></button></h2>
+        <div class="tablewrap">
+          <table>
+            <thead><tr>
+              <th>Line<button class="info" data-info="colLine"></button></th>
+              <th>Basis<button class="info" data-info="colBasis"></button></th>
+              <th>Monthly<button class="info" data-info="colMonthly"></button></th>
+              <th>Share<button class="info" data-info="colShare"></button></th>
+              <th>Per msg<button class="info" data-info="colPer"></button></th>
+            </tr></thead>
+            <tbody id="tbody"></tbody>
+            <tfoot><tr>
+              <td>Total</td><td></td><td class="mono" id="fTotal"></td>
+              <td></td><td class="mono" id="fPer"></td>
+            </tr></tfoot>
+          </table>
+        </div>
+      </section>
+
+      <section class="cliff" id="cliff">
+        <h3><span id="cliffHead">The 1 October 2026 change lands in 10 days</span><button class="info" data-info="cliff"></button></h3>
+        <p>Service messages — every free-form reply the bot sends inside the 24-hour window — have
+          been free since November 2024. From <span class="mono">1 Oct 2026</span> Meta charges them
+          at each country's utility rate, with <span class="mono">1,000 free per number per month</span>
+          and no volume discount. Egypt's rate is <span class="mono">$0.0036</span> per message.</p>
+        <p id="cliffLine">At your current setting that adds <span class="mono">$14.61</span> a month.</p>
+        <p>Inbound messages stay free and voice costs Meta nothing extra — only the bot's text reply
+          is billed. The free grant is per <em>number</em>, so a second number brings another 1,000.</p>
+      </section>
+
+      <div class="notes">
+        <div class="note-card">
+          <h3>Measured here<button class="info" data-info="measured"></button></h3>
+          <details class="fold mini">
+            <summary>Show the measurements</summary>
+            <div class="fold-body"><ul>
+              <li>Answers: <b>7,600</b> in / <b>46</b> out, from 20 plain calls on 10 Oct
+                (7,100–8,800; later turns carry the visit so far).</li>
+              <li>Writing a voice note down: <b>~127</b> tokens of instructions plus the audio,
+                a few dozen out; then it is answered like text.</li>
+              <li><b>18,000</b> tokens when the website tool fires, on either kind.</li>
+              <li><b>0</b> cache hits — the hours-in-every-answer habit blocks it.</li>
+            </ul></div>
+          </details>
+        </div>
+        <div class="note-card">
+          <h3>Why voice costs more<button class="info" data-info="whyVoice"></button></h3>
+          <details class="fold mini">
+            <summary>Show the reasons</summary>
+            <div class="fold-body"><ul>
+              <li>Each note takes <b>one extra short call</b> to write it down; the audio in it bills
+                at <b>32 tokens/second and double the text rate</b>.</li>
+              <li>After that it is answered exactly like a typed question, and the off-topic guard
+                screens it too.</li>
+              <li>Voice answers are <b>never cached</b>.</li>
+              <li>Only about <b>+16%</b> at 15s and <b>+45%</b> at the 45s cap. It is not the thing
+                to worry about.</li>
+            </ul></div>
+          </details>
+        </div>
+        <div class="note-card">
+          <h3>Deliberately excluded<button class="info" data-info="excluded"></button></h3>
+          <p class="excl">No salaries, contractors or engineering time — infrastructure and usage
+            only. Also outside: Meta marketing or utility <em>templates</em> (this bot sends none),
+            phone number rental, paid monitoring, and AWS support plans. Downloading voice notes
+            from WhatsApp is free. Business verification with Meta is free.</p>
+        </div>
+      </div>
+
+      <p class="foot">Prices checked 21 Sep 2026<button class="info" data-info="foot"></button> · token counts measured 10 Oct 2026 · Meta, 360dialog and AWS rates from their published
+        tables · model prices and audio rates live from the OpenRouter catalogue</p>
+    </main>
+  </div>
+</div>
+
+<div class="pop" id="infoPop" aria-hidden="true" hidden></div>
+<div class="sr" id="infoLive" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  "use strict";
+  var DAYS = 30.4, FREE = 1000, META_RATE = 0.0036;
+  var OUT_TEXT = 46, OUT_VOICE = 46, WEB_TOK = 18000, RETRY = 0.05, AUD_PER_SEC = 32;
+  // A voice note is first written down by a short call (its instructions, the audio,
+  // the words out), then answered like a typed question.
+  var TX_IN = 127, TX_OUT_PER_SEC = 4;
+
+  var LINES = [
+    { key:"llm",   name:"AI model",       v:"--s1", basis:"tokens × list price" },
+    { key:"meta",  name:"Meta / WhatsApp", v:"--s2", basis:"per service message" },
+    { key:"bsp",   name:"360dialog",      v:"--s3", basis:"flat, per number" },
+    { key:"infra", name:"AWS + domain",   v:"--s4", basis:"flat" }
+  ];
+
+  var $ = function(id){ return document.getElementById(id); };
+  var css = function(v){ return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); };
+  var usd = function(n){
+    if (n === 0) return "$0";
+    if (n < 10) return "$" + n.toFixed(2);
+    return "$" + Math.round(n).toLocaleString("en-US");
+  };
+  var per = function(n){ return "$" + n.toFixed(4); };
+  var tok = function(n){ return Math.round(n).toLocaleString("en-US") + " tok"; };
+
+  function read(){
+    var mp = $("model").value.split("|");
+    var hp = $("host").value.split("|");
+    return {
+      msgs:+$("msgs").value, voicePct:+$("voice").value/100, secs:+$("secs").value,
+      numbers:+$("nums").value,
+      pIn:+mp[0], pOut:+mp[1], pAud:+mp[2], hearsAudio:mp[3] === "1",
+      tokIn:+$("tin").value, webPct:+$("web").value/100,
+      cachePct:+$("cache").value/100, scopePct:+$("scope").value/100,
+      plan:+$("plan").value, metaPaid:$("metaPaid").checked, vat:$("vat").checked ? 0.14 : 0,
+      host:+hp[0], hostName:hp[1], r53:$("r53").checked ? 0.5 : 0,
+      snap:+$("snap").value, domYr:+$("dom").value, fx:+$("fx").value, egp:+$("egp").value
+    };
+  }
+
+  /* One model, used by the tiles, the table and every point on the chart. */
+  function calc(s, msgsPerDay){
+    var inbound = (msgsPerDay === undefined ? s.msgs : msgsPerDay) * DAYS;
+    var inVoice = inbound * s.voicePct;
+    var inText  = inbound - inVoice;
+
+    // Text can be blocked off-topic or served from cache. Every voice note is written
+    // down; the off-topic guard then screens it like text, but it is never cached.
+    var callsText  = inText * Math.max(0, 1 - s.scopePct - s.cachePct);
+    var callsVoice = inVoice * Math.max(0, 1 - s.scopePct);
+
+    var ctx     = (1 - s.webPct) * s.tokIn + s.webPct * WEB_TOK;
+    var audTok  = AUD_PER_SEC * s.secs;
+    var txOut   = TX_OUT_PER_SEC * s.secs;
+    var txCost  = (TX_IN*s.pIn + audTok*s.pAud + txOut*s.pOut)/1e6;   // one write-down
+
+    var inTextTok  = callsText  * ctx * (1 + RETRY);
+    var inVoiceTok = callsVoice * ctx * (1 + RETRY);
+
+    var llmText  = inTextTok/1e6*s.pIn + callsText*OUT_TEXT*(1+RETRY)/1e6*s.pOut;
+    var llmVoice = inVoice * txCost
+                 + inVoiceTok/1e6*s.pIn + callsVoice*OUT_VOICE*(1+RETRY)/1e6*s.pOut;
+
+    var bill  = s.metaPaid ? Math.max(0, inbound - FREE*s.numbers) : 0;
+    var meta  = bill * META_RATE * (1 + s.vat);
+    var bsp   = s.plan * s.numbers * s.fx;
+    var infra = s.host + s.r53 + s.snap + s.domYr/12;
+
+    // unit AI cost of a single message of each kind, before the free-guard discounts
+    var unitText  = (ctx*s.pIn + OUT_TEXT*s.pOut)/1e6 * (1+RETRY);
+    var unitVoice = txCost + (ctx*s.pIn + OUT_VOICE*s.pOut)/1e6 * (1+RETRY);
+
+    return { inbound:inbound, inText:inText, inVoice:inVoice,
+             callsText:callsText, callsVoice:callsVoice, billable:bill,
+             ctx:ctx, audTok:audTok, txOut:txOut, unitText:unitText, unitVoice:unitVoice,
+             llmText:llmText, llmVoice:llmVoice,
+             llm:llmText+llmVoice, meta:meta, bsp:bsp, infra:infra,
+             total:llmText+llmVoice+meta+bsp+infra };
+  }
+
+  /* ---------------- chart ---------------- */
+  var W=760, H=330, ML=62, MR=16, MT=14, MB=42;
+  var PW=W-ML-MR, PH=H-MT-MB;
+  function niceMax(v){
+    if (v <= 0) return 10;
+    var p = Math.pow(10, Math.floor(Math.log10(v)));
+    return Math.ceil(v/p*2)/2*p;
+  }
+  var pts = [];
+
+  function drawChart(s){
+    var xMax = Math.max(200, Math.min(2000, Math.round(s.msgs*2.5/50)*50));
+    var N = 64, i, j;
+    pts = [];
+    for (i=0;i<=N;i++){
+      var m = xMax*i/N, r = calc(s, m);
+      r.m = m; pts.push(r);
+    }
+    var yMax = niceMax(calc(s, xMax).total);
+    var X = function(m){ return ML + (m/xMax)*PW; };
+    var Y = function(v){ return MT + PH - (v/yMax)*PH; };
+    var ink2 = css("--ink-2"), line = css("--line"), ink = css("--ink"), surf = css("--surface");
+    var o = [];
+
+    for (j=0;j<=4;j++){
+      var v = yMax*j/4, y = Y(v);
+      o.push('<line x1="'+ML+'" y1="'+y.toFixed(1)+'" x2="'+(ML+PW)+'" y2="'+y.toFixed(1)+
+             '" stroke="'+line+'" stroke-width="1"/>');
+      o.push('<text x="'+(ML-9)+'" y="'+(y+4).toFixed(1)+'" text-anchor="end" font-size="11" fill="'+ink2+'">'+
+             usd(v)+'</text>');
+    }
+
+    var order = ["infra","bsp","meta","llm"];
+    var base = pts.map(function(){ return 0; });
+    for (j=0;j<order.length;j++){
+      var k = order[j];
+      var col = css(LINES.filter(function(L){ return L.key===k; })[0].v);
+      var top = pts.map(function(p, idx){ return base[idx] + p[k]; });
+      var d = "M " + X(pts[0].m).toFixed(1) + " " + Y(base[0]).toFixed(1);
+      for (i=0;i<pts.length;i++) d += " L " + X(pts[i].m).toFixed(1) + " " + Y(top[i]).toFixed(1);
+      for (i=pts.length-1;i>=0;i--) d += " L " + X(pts[i].m).toFixed(1) + " " + Y(base[i]).toFixed(1);
+      o.push('<path d="'+d+' Z" fill="'+col+'" fill-opacity=".88" stroke="'+surf+
+             '" stroke-width="2" stroke-linejoin="round"/>');
+      base = top;
+    }
+
+    o.push('<line x1="'+ML+'" y1="'+(MT+PH)+'" x2="'+(ML+PW)+'" y2="'+(MT+PH)+
+           '" stroke="'+ink2+'" stroke-width="1"/>');
+    for (j=0;j<=4;j++){
+      var mv = xMax*j/4;
+      o.push('<text x="'+X(mv).toFixed(1)+'" y="'+(MT+PH+18)+'" text-anchor="middle" font-size="11" fill="'+ink2+'">'+
+             Math.round(mv).toLocaleString("en-US")+'</text>');
+    }
+    o.push('<text x="'+(ML+PW/2)+'" y="'+(H-4)+'" text-anchor="middle" font-size="10.5" fill="'+ink2+
+           '" letter-spacing="1.2">MESSAGES PER DAY</text>');
+
+    var cur = calc(s), cx = X(s.msgs);
+    o.push('<line x1="'+cx.toFixed(1)+'" y1="'+MT+'" x2="'+cx.toFixed(1)+'" y2="'+(MT+PH)+
+           '" stroke="'+ink+'" stroke-width="1.5" stroke-dasharray="3 3"/>');
+    o.push('<circle cx="'+cx.toFixed(1)+'" cy="'+Y(cur.total).toFixed(1)+'" r="5" fill="'+ink+
+           '" stroke="'+surf+'" stroke-width="2"/>');
+    var right = cx > ML+PW-90;
+    o.push('<text x="'+(right?cx-9:cx+9).toFixed(1)+'" y="'+(Y(cur.total)-11).toFixed(1)+
+           '" text-anchor="'+(right?"end":"start")+'" font-size="12.5" font-weight="600" fill="'+ink+'">'+
+           usd(cur.total)+'/mo</text>');
+
+    $("svg").innerHTML = o.join("");
+    $("svg").__x = { xMax:xMax, X:X, Y:Y };
+
+    $("legend").innerHTML = LINES.map(function(L){
+      return '<span class="lg"><span class="sw" style="background:'+css(L.v)+'"></span>'+
+             L.name+' <b>'+usd(cur[L.key])+'</b></span>';
+    }).join("");
+  }
+
+  function hover(ev){
+    var svg = $("svg"), tip = $("tip"), meta = svg.__x;
+    if (!meta || !pts.length) return;
+    var r = svg.getBoundingClientRect();
+    var px = (ev.clientX - r.left) / r.width * W;
+    if (px < ML || px > ML+PW){ tip.classList.remove("on"); return; }
+    var m = (px-ML)/PW * meta.xMax, best = pts[0], bd = Infinity;
+    for (var i=0;i<pts.length;i++){
+      var d = Math.abs(pts[i].m - m);
+      if (d < bd){ bd = d; best = pts[i]; }
+    }
+    tip.innerHTML = '<div class="th">'+Math.round(best.m).toLocaleString("en-US")+' msgs/day</div>'+
+      LINES.map(function(L){
+        return '<div class="tr"><span><i style="background:'+css(L.v)+'"></i>'+L.name+
+               '</span><span>'+usd(best[L.key])+'</span></div>';
+      }).join("") +
+      '<div class="tr tt"><span>Total</span><span>'+usd(best.total)+'</span></div>';
+    tip.classList.add("on");
+    tip.style.left = (meta.X(best.m)/W*r.width) + "px";
+    tip.style.top  = (meta.Y(best.total)/H*r.height - 12) + "px";
+  }
+
+  /* ---------------- render ---------------- */
+  function render(){
+    var s = read(), c = calc(s);
+
+    $("oMsgs").textContent  = s.msgs.toLocaleString("en-US");
+    $("oVoice").textContent = Math.round(s.voicePct*100)+"%";
+    $("oSecs").textContent  = s.secs+"s";
+    $("oNums").textContent  = s.numbers;
+    $("oTin").textContent   = s.tokIn.toLocaleString("en-US");
+    $("oWeb").textContent   = Math.round(s.webPct*100)+"%";
+    $("oCache").textContent = Math.round(s.cachePct*100)+"%";
+    $("oScope").textContent = Math.round(s.scopePct*100)+"%";
+    $("oSnap").textContent  = "$"+s.snap;
+    $("oDom").textContent   = "$"+s.domYr;
+    $("oFx").textContent    = s.fx.toFixed(2);
+    $("oEgp").textContent   = s.egp.toFixed(1);
+
+    // a text-only model cannot serve voice notes at all
+    var broken = !s.hearsAudio && s.voicePct > 0;
+    $("alert").classList.toggle("on", broken);
+    if (broken){
+      $("alertBody").textContent =
+        "At " + Math.round(s.voicePct*100) + "% voice you would be turning away about " +
+        Math.round(c.inVoice).toLocaleString("en-US") +
+        " messages a month, or you keep a second model just for audio. The AI figures below " +
+        "count only the text.";
+    }
+    var eff = Object.assign({}, s);
+    if (broken) eff.voicePct = 0;                 // don't bill audio a text model cannot take
+    c = calc(eff);
+
+    $("kTotal").textContent = usd(c.total);
+    $("kEgp").textContent   = "≈ EGP " + Math.round(c.total*s.egp).toLocaleString("en-US") +
+                              " at " + s.egp.toFixed(1) + "/USD";
+    $("kPer").textContent   = per(c.total / c.inbound);
+    $("kVol").textContent   = Math.round(c.inbound).toLocaleString("en-US");
+    $("kMix").textContent   = Math.round(c.inText).toLocaleString("en-US") + " text · " +
+                              Math.round(c.inVoice).toLocaleString("en-US") + " voice";
+
+    var top = LINES.map(function(L){ return { n:L.name, v:c[L.key] }; })
+                   .sort(function(a,b){ return b.v - a.v; })[0];
+    $("kBig").textContent     = top.n;
+    $("kBigNote").textContent = Math.round(top.v/c.total*100) + "% of the bill";
+
+    // text vs voice tiles
+    $("aText").textContent     = per(c.unitText);
+    $("dTextIn").textContent   = tok(c.ctx);
+    $("dTextOut").textContent  = OUT_TEXT + " tok";
+    $("dTextReach").textContent= Math.round(Math.max(0,1-s.scopePct-s.cachePct)*100) + "%";
+    $("aVoice").textContent    = s.hearsAudio ? per(c.unitVoice) : "n/a";
+    $("ofVoice").textContent   = "AI cost of one " + s.secs + "s voice note";
+    $("dVoiceIn").textContent  = tok(c.ctx);
+    $("dVoiceAud").textContent = s.hearsAudio ? tok(c.audTok) : "not supported";
+    $("dVoiceOut").textContent = OUT_VOICE + " tok";
+    $("dVoiceTx").textContent  = s.hearsAudio ? TX_IN + " in · " + Math.round(c.txOut) + " out" : "not supported";
+    $("dVoiceReach").textContent = Math.round(Math.max(0,1-s.scopePct)*100) + "%";
+    var delta = c.unitText > 0 ? (c.unitVoice/c.unitText - 1) * 100 : 0;
+    $("pVoice").textContent = s.hearsAudio ? "+" + Math.round(delta) + "%" : "unsupported";
+    $("pVoice").classList.toggle("up", s.hearsAudio);
+
+    // breakdown, with AI split into its two kinds
+    var rows = "";
+    LINES.forEach(function(L){
+      var v = c[L.key], share = c.total ? v/c.total*100 : 0;
+      var basis = L.key === "meta"
+        ? (s.metaPaid ? Math.round(c.billable).toLocaleString("en-US")+" billable × $0.0036"
+                      : "free until 1 Oct 2026")
+        : L.key === "bsp"   ? "€"+s.plan+" × "+s.numbers+" × "+s.fx.toFixed(2)
+        : L.key === "infra" ? s.hostName + " + DNS + backups"
+        : Math.round(c.callsText + c.callsVoice + c.inVoice).toLocaleString("en-US")+" model calls";
+      rows += '<tr><td><span class="dot" style="background:'+css(L.v)+'"></span>'+L.name+
+        '<button class="info" data-info="row-'+L.key+'"></button>'+
+        '<span class="what">'+L.basis+'</span></td>'+
+        '<td class="mono" style="font-size:12.5px;color:var(--ink-2)">'+basis+'</td>'+
+        '<td>'+usd(v)+'</td>'+
+        '<td><span class="bar"><i style="width:'+share.toFixed(1)+'%;background:'+css(L.v)+
+        '"></i></span> '+share.toFixed(0)+'%</td>'+
+        '<td>'+per(v/c.inbound)+'</td></tr>';
+      if (L.key === "llm"){
+        rows += '<tr class="sub"><td>from text</td><td></td><td>'+usd(c.llmText)+
+                '</td><td>'+Math.round(c.callsText).toLocaleString("en-US")+' calls</td><td></td></tr>';
+        rows += '<tr class="sub"><td>from voice notes</td><td></td><td>'+usd(c.llmVoice)+
+                '</td><td>'+Math.round(c.inVoice + c.callsVoice).toLocaleString("en-US")+' calls</td><td></td></tr>';
+      }
+    });
+    $("tbody").innerHTML = rows;
+    labelInfo($("tbody"));
+    $("fTotal").textContent = usd(c.total);
+    $("fPer").textContent   = per(c.total/c.inbound);
+
+    var without = calc(Object.assign({}, eff, { metaPaid:false }));
+    var withm   = calc(Object.assign({}, eff, { metaPaid:true }));
+    var d       = withm.total - without.total;
+    $("cliffLine").innerHTML = d > 0
+      ? 'At your current setting that adds <span class="mono">'+usd(d)+'</span> a month — '+
+        Math.round(d/without.total*100)+'% on top of everything else.'
+      : 'At your current setting you stay inside the free grant, so it adds <span class="mono">$0</span>.';
+
+    Array.prototype.forEach.call(document.querySelectorAll("#scen .chip"), function(b){
+      b.setAttribute("aria-pressed", String(+b.dataset.m === s.msgs));
+    });
+
+    drawChart(eff);
+  }
+
+  /* The countdown in the October box is worked out from today, not frozen on
+     the day the page was written. */
+  function cliffHeading(){
+    var now = new Date();
+    var days = Math.round((Date.UTC(2026, 9, 1) - Date.UTC(now.getFullYear(), now.getMonth(), now.getDate())) / 864e5);
+    $("cliffHead").textContent =
+      days > 1   ? "The 1 October 2026 change lands in " + days + " days" :
+      days === 1 ? "The 1 October 2026 change lands tomorrow" :
+      days === 0 ? "The 1 October 2026 change lands today" :
+                   "The 1 October 2026 change is now in effect";
+  }
+
+  /* ================= plain-language help ================= */
+  // Written for someone with no technical or finance background: what the
+  // thing is, in everyday words, and why it matters to the bill.
+  var INFO = {
+    page:{t:"What this page is", b:"<p>A calculator for what the District 5 WhatsApp assistant — the chatbot shoppers message to ask where a shop is or when it opens — costs to run each month.</p><p>Change any setting and every number updates. It covers running costs only: no salaries and no development time.</p>"},
+    scenario:{t:"Scenarios", b:"<p>Ready-made guesses at how busy the assistant will be, counted in shopper messages per day — from a quiet trial (25) to an Eid-holiday rush (1,200).</p><p>Tap one to try it. You can fine-tune the number with the “Messages a day” slider.</p>"},
+    total:{t:"Monthly total", b:"<p>Everything the assistant costs in one month, added up: the AI, WhatsApp's own fees, the company that connects us to WhatsApp, and the rented server.</p><p>It's in US dollars because the suppliers charge in dollars or euros. The Egyptian-pound figure underneath is the same amount, converted at the rate you set.</p>"},
+    perMsg:{t:"Per message", b:"<p>The monthly total divided by the number of messages in the month.</p><p>It includes the fixed monthly fees, so it falls as the assistant gets busier — the same fees are shared by more messages.</p>"},
+    volume:{t:"Messages per month", b:"<p>How many shopper messages arrive in a month: messages per day × 30.4, the length of an average month.</p><p>Split into typed messages and voice notes, because voice notes cost a little more to handle.</p>"},
+    biggest:{t:"Biggest line", b:"<p>The single cost that takes the largest slice of the monthly bill. When the mall is quiet it's usually a fixed monthly fee; as traffic grows, the per-message costs take over.</p>"},
+    alertVoice:{t:"Why this warning appears", b:"<p>The AI you've picked can read text but can't listen to voice notes. Shoppers who send one wouldn't get a proper answer unless a second AI is added just for audio.</p><p>Pick a model marked “hears audio” and the warning goes away.</p>"},
+    assumptions:{t:"Assumptions", b:"<p>The settings every number on this page is built from. Move a slider or pick an option and the whole page recalculates.</p><p><b>Assumed</b> means our best guess — replace it with the real figure once the assistant has been live for a while. <b>Measured</b> means it was taken from the assistant's own records.</p>"},
+    grpTraffic:{t:"Traffic", b:"<p>How much shoppers use the assistant. This is the biggest driver of cost: more messages mean more AI work and more WhatsApp fees.</p>"},
+    msgs:{t:"Messages a day", b:"<p>How many messages shoppers send the assistant in a day. It replies once to each.</p><p>Nobody knows the real number yet. 150 a day is a sensible starting guess for a mall with 190 shops; put the real figure here after the first month.</p>"},
+    voice:{t:"Sent as voice notes", b:"<p>The share of messages that are recorded voice notes rather than typed text. Voice notes are very common on WhatsApp in Egypt.</p><p>They cost a little more, because the AI first listens to the recording and writes down what was said, then answers those words like a typed question. The assistant always replies in text.</p>"},
+    secs:{t:"Voice note length", b:"<p>How long a typical voice note lasts, in seconds. The longer the recording, the more the AI charges to listen to it and write it down. The answer that follows costs the same as for a typed question.</p><p>The assistant turns away recordings over 45 seconds, which puts a ceiling on this cost.</p>"},
+    nums:{t:"WhatsApp numbers", b:"<p>How many separate WhatsApp phone numbers the assistant answers on. Each number has its own monthly fee — and its own 1,000 free replies a month.</p><p>One number is enough, unless another brand needs its own.</p>"},
+    grpAI:{t:"AI", b:"<p>The artificial-intelligence service that reads each shopper's question and writes the reply. It charges for how much text it reads and how much it writes.</p>"},
+    model:{t:"Model", b:"<p>Which AI does the reading and writing. They differ in price, and in whether they can listen to voice notes.</p><p>The two prices are per million <b>tokens</b> — small chunks of text, about three-quarters of a word each. The first price is for reading, the second for writing.</p>"},
+    tin:{t:"Context tokens per reply", b:"<p>How much the AI has to read before it answers each question: its standing instructions plus the part of the shop directory that matters. Think of it as a briefing it re-reads every time.</p><p>Voice notes get the same briefing once they are written down. This is most of the AI bill, so a shorter briefing is the main way to save.</p>"},
+    web:{t:"Website-tool calls", b:"<p>How often the AI has to look something up on the mall's website because the shop directory didn't have the answer.</p><p>Each lookup costs about two and a half times a normal reply (about 18,000 tokens instead of 7,600). A complete directory keeps this low.</p>"},
+    cache:{t:"Cache hit rate", b:"<p>How often a question can be answered by re-sending an answer given before, without asking the AI again — like keeping a list of frequently asked questions. Those replies cost nothing.</p><p>Only typed questions are matched this way, never voice notes.</p>"},
+    scope:{t:"Blocked off-topic", b:"<p>Questions that have nothing to do with the mall — football scores, homework — are politely turned away before they reach the AI, so they cost nothing.</p><p>Voice notes are screened too, once they have been written down, so an off-topic one costs only that short first step.</p>"},
+    grpWA:{t:"WhatsApp channel", b:"<p>The cost of using WhatsApp itself: the company that connects the assistant to WhatsApp, and WhatsApp's own fee for each reply.</p>"},
+    plan:{t:"360dialog plan", b:"<p>360dialog is the company, approved by WhatsApp, that plugs the assistant into WhatsApp. This is their monthly fee for each phone number.</p><p>The dearer plans buy faster customer support or enormous message volumes, which a mall doesn't need.</p>"},
+    metaPaid:{t:"Service messages are billable", b:"<p>Meta, the company that owns WhatsApp, has let businesses reply to customers for free. From 1 October 2026 it charges a small fee for each reply after the first 1,000 in a month.</p><p>Leave this ticked to see the bill with the new fee; untick it to see today's bill.</p>"},
+    vat:{t:"Egyptian VAT", b:"<p>Value-added tax — Egypt's 14% sales tax. It's added on top of WhatsApp's per-reply fees.</p>"},
+    grpAWS:{t:"Hosting (AWS)", b:"<p>The computer that runs the assistant day and night, rented from Amazon Web Services (AWS), plus its web address and backups. A fixed amount each month.</p>"},
+    host:{t:"Compute", b:"<p>The rented computer — the server — that the assistant and the dashboard run on. Bigger ones cost more and handle more at once.</p><p>“Lightsail 2 GB” is a simple, all-in monthly package, and plenty for one mall.</p>"},
+    r53:{t:"Route 53", b:"<p>Amazon's address book for the internet: it makes the dashboard's web address lead to the right computer. About half a dollar a month.</p>"},
+    snap:{t:"Snapshots and backups", b:"<p>A daily copy of the whole system, kept in case something breaks. The entire shop directory lives in one file, so don't set this to zero.</p>"},
+    dom:{t:"Domain per year", b:"<p>The yearly price of the dashboard's web address — a “.com” name. The page spreads it over 12 months.</p>"},
+    grpFX:{t:"Exchange rates", b:"<p>One supplier charges in euros and the totals are in US dollars; Egyptian pounds are shown for reference. Rates move, so set today's here.</p>"},
+    fx:{t:"Euro to US dollar", b:"<p>How many US dollars one euro buys. Needed because 360dialog charges in euros.</p>"},
+    egp:{t:"US dollar to Egyptian pound", b:"<p>How many Egyptian pounds one US dollar buys. It only changes the pound figure under the monthly total — the dollar amounts stay the same. Set it to today's rate.</p>"},
+    oneMsg:{t:"What one message costs", b:"<p>What the AI charges to answer a single typed message, and a single voice note. These are fractions of a US cent — it's the volume that adds up.</p><p>WhatsApp and server fees aren't included here; they're in the table further down.</p>"},
+    text:{t:"Text", b:"<p>A typed message — the cheapest kind for the AI to answer.</p>"},
+    voiceKind:{t:"Voice note", b:"<p>A recorded message. The AI first writes down what was said — listening is priced higher than reading — then answers it like a typed message. The badge shows how much more that costs than a typed message.</p>"},
+    writeDown:{t:"Writing it down", b:"<p>The short first step for a voice note: a brief instruction (about 127 tokens) plus the recording go in, and the words that were said come out, a few per second of speech. Then the note is answered like a typed question.</p>"},
+    ctxIn:{t:"Context in", b:"<p>How much the AI reads for each answer — its briefing plus the question — counted in tokens: small chunks of text, about three-quarters of a word each.</p>"},
+    replyOut:{t:"Reply out", b:"<p>How much the AI writes back, in tokens. Replies are short, so this is a small part of the cost.</p>"},
+    reach:{t:"Reaches the model", b:"<p>The share of messages the AI actually has to answer. The rest are either off-topic and turned away, or answered from the saved-answers list — both free.</p>"},
+    audIn:{t:"Audio in", b:"<p>The voice recording itself, counted in tokens: about 32 per second of speech, charged at twice the price of text. It is sent only once, to be written down.</p>"},
+    chart:{t:"Monthly cost as traffic grows", b:"<p>Left to right, the mall gets busier. Each coloured band is one kind of cost, stacked so the top edge is the total.</p><p>The dot and dashed line mark your current settings. Hover over or tap anywhere on the chart to read the numbers at that point.</p>"},
+    table:{t:"Where the money goes", b:"<p>The monthly bill split into its four parts — what each is based on, what it costs, its share of the total, and its cost per message.</p>"},
+    colLine:{t:"Line", b:"<p>Each row is one part of the bill: the AI, WhatsApp's fees, the company that connects us to WhatsApp, and the server.</p>"},
+    colBasis:{t:"Basis", b:"<p>What that part is calculated from — for example a fixed monthly fee, or a number of messages times a price.</p>"},
+    colMonthly:{t:"Monthly", b:"<p>What that part costs in one month, in US dollars.</p>"},
+    colShare:{t:"Share", b:"<p>That part's slice of the whole monthly bill. The bar shows the same thing at a glance.</p>"},
+    colPer:{t:"Per message", b:"<p>That part's monthly cost divided by the number of messages in the month.</p>"},
+    "row-llm":{t:"AI model", b:"<p>The AI service that reads each question and writes the answer, paid for by the amount of text. Split below into typed messages and voice notes.</p>"},
+    "row-meta":{t:"Meta / WhatsApp", b:"<p>WhatsApp's own fee for each reply the assistant sends, after the first 1,000 free each month. It starts on 1 October 2026.</p>"},
+    "row-bsp":{t:"360dialog", b:"<p>The monthly fee to the company that plugs the assistant into WhatsApp. The same whether the mall is quiet or busy.</p>"},
+    "row-infra":{t:"AWS + domain", b:"<p>Renting the server that runs the assistant, plus its web address and daily backups. A fixed amount each month.</p>"},
+    cliff:{t:"The 1 October change", b:"<p>Until now WhatsApp charged nothing for a business's replies. From 1 October 2026 it charges about a third of a US cent per reply, after 1,000 free a month for each number.</p><p>This box shows what that adds to the bill at your settings.</p>"},
+    measured:{t:"Measured here", b:"<p>Figures taken from the assistant's own test records — how much text each answer actually used — instead of estimates.</p>"},
+    whyVoice:{t:"Why voice costs more", b:"<p>The short version: a voice note needs one extra short step to write it down, and listening costs more than reading. Its answers are never reused. Even so, it only adds a little.</p>"},
+    excluded:{t:"Deliberately excluded", b:"<p>What this page leaves out, so the total isn't mistaken for the full cost of the project — mainly people's time.</p>"},
+    foot:{t:"Where the prices come from", b:"<p>The date the prices were last checked, and their sources (the token counts were re-measured from the assistant's own records on 10 Oct 2026): the suppliers' own published price lists. Prices change, so check again before signing anything.</p>"}
+  };
+
+  var pop = $("infoPop"), live = $("infoLive"), anchor = null;
+  var reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var clamp = function(v, lo, hi){ return Math.max(lo, Math.min(hi, v)); };
+
+  /** Give every i button its glyph and a name a screen reader can say. */
+  function labelInfo(root){
+    Array.prototype.forEach.call((root || document).querySelectorAll("button.info"), function(b){
+      var it = INFO[b.getAttribute("data-info")];
+      if (!it || b.hasAttribute("aria-label")) return;
+      b.type = "button";
+      b.textContent = "i";
+      b.setAttribute("aria-label", "Explain: " + it.t);
+      b.setAttribute("aria-expanded", "false");
+    });
+  }
+
+  /**
+   * Place a fixed element next to a rectangle, trying each side in turn and
+   * never leaving the screen. With no room anywhere it sits at the bottom.
+   */
+  function placeNear(el, r, order){
+    var M = 16, G = 12, vw = document.documentElement.clientWidth, vh = window.innerHeight;
+    var w = el.offsetWidth, h = el.offsetHeight;
+    var spots = {
+      below:{ top:r.bottom + G, left:r.left + r.width/2 - w/2, ok:r.bottom + G + h <= vh - M },
+      above:{ top:r.top - G - h, left:r.left + r.width/2 - w/2, ok:r.top - G - h >= M },
+      right:{ top:r.top + r.height/2 - h/2, left:r.right + G, ok:r.right + G + w <= vw - M },
+      left: { top:r.top + r.height/2 - h/2, left:r.left - G - w, ok:r.left - G - w >= M }
+    };
+    var s = null;
+    for (var i = 0; i < order.length && !s; i++) if (spots[order[i]].ok) s = spots[order[i]];
+    if (!s) s = { top:vh - h - M, left:(vw - w)/2 };
+    el.style.left = Math.round(clamp(s.left, M, Math.max(M, vw - w - M))) + "px";
+    el.style.top  = Math.round(clamp(s.top,  M, Math.max(M, vh - h - M))) + "px";
+  }
+
+  function openInfo(btn){
+    var it = INFO[btn.getAttribute("data-info")]; if (!it) return;
+    if (anchor) anchor.setAttribute("aria-expanded", "false");
+    anchor = btn; btn.setAttribute("aria-expanded", "true");
+    pop.innerHTML = '<button type="button" class="x" aria-label="Close" tabindex="-1">×</button><h4>' + it.t + '</h4>' + it.b;
+    pop.hidden = false;
+    placePop();
+    // The visible card is for the eye; this always-present region is what a
+    // screen reader announces.
+    live.textContent = "";
+    setTimeout(function(){ live.textContent = it.t + ". " + pop.textContent.replace(/^×/, "").replace(it.t, "").trim(); }, 40);
+  }
+  function closeInfo(){
+    if (!anchor) return;
+    anchor.setAttribute("aria-expanded", "false");
+    anchor = null; pop.hidden = true; pop.innerHTML = "";
+  }
+  function placePop(){
+    if (!anchor) return;
+    if (!document.body.contains(anchor)) return closeInfo();
+    var r = anchor.getBoundingClientRect();
+    if (r.bottom < 0 || r.top > window.innerHeight) return closeInfo();
+    placeNear(pop, r, ["below", "above", "right", "left"]);
+  }
+
+  document.addEventListener("click", function(e){
+    var b = e.target.closest ? e.target.closest("button.info") : null;
+    if (b){
+      e.preventDefault(); e.stopPropagation();          // also keeps a fold from toggling
+      if (anchor === b) closeInfo(); else openInfo(b);
+      return;
+    }
+    if (pop.contains(e.target)){ if (e.target.closest(".x")){ var a = anchor; closeInfo(); if (a) a.focus(); } return; }
+    if (anchor) closeInfo();
+  });
+  document.addEventListener("keydown", function(e){
+    if (e.key === "Escape" && anchor && !T){ var a = anchor; closeInfo(); a.focus(); }
+  });
+
+  /* ================= guided tour ================= */
+  var STEPS = [
+    { sel:".masthead", title:"A quick tour",
+      body:"This page works out what the District 5 WhatsApp assistant costs to run each month. It's a calculator, not a bill: you change the settings, it does the sums. The tour takes about a minute." },
+    { sel:"#scen", title:"Start with how busy it is",
+      body:"Each button is a ready-made guess at how many messages shoppers send in a day — from a quiet trial to an Eid rush. Tap one and every number on the page updates." },
+    { sel:"#leadCell", title:"The answer",
+      body:"What one month costs in total, in US dollars, with Egyptian pounds underneath. The suppliers charge in dollars or euros, so dollars are the main figure." },
+    { sel:"#headline", title:"The same bill, three more ways",
+      body:"What each message costs on average, how many messages that is in a month, and which single cost is the biggest." },
+    { sel:"#rail", title:"The settings behind the numbers", prefer:["right", "left", "below", "above"],
+      body:"Everything the total depends on. Slide or pick to change a setting. <b>Assumed</b> marks our guesses; <b>measured</b> marks figures from the assistant's own records." },
+    { sel:"#ctlMsgs", title:"The setting that matters most",
+      body:"Messages per day drives almost everything. Once the assistant has been live for a month, put the real number here." },
+    { sel:"#foldAI > summary", title:"Technical bits are folded away",
+      body:"Detail you can safely ignore is tucked inside headings like this one. Tap a heading to open it if you're curious, and tap again to close it." },
+    { sel:"#oneMsg", title:"The cost of a single message",
+      body:"What the AI charges to answer one typed message and one voice note. Fractions of a cent — it's the volume that adds up." },
+    { sel:"#chartPanel", title:"How the bill grows",
+      body:"Left to right, the mall gets busier. Each colour is one kind of cost, stacked so the top edge is the total. The dot is you, at your current settings. Hover or tap the chart to read any point." },
+    { sel:"#moneyTable", title:"Where the money goes",
+      body:"The bill split into its four parts: what each is based on, what it costs a month, and its share of the total." },
+    { sel:"#cliff", title:"A date to watch",
+      body:"WhatsApp starts charging for the assistant's replies on 1 October 2026. This box shows what that adds at your settings." },
+    { sel:"#leadCell .info", title:"Stuck on a word?", pad:7, round:true,
+      body:"Tap any <span class=\"info-mark\">i</span> for a plain-language explanation of that item. There's one next to every number and every setting." },
+    { sel:"#tourBtn", title:"That's the tour", pad:6,
+      body:"You can take it again any time from this button." }
+  ];
+  var T = null, KEY = "d5costs.tour", tracking = null;
+  var seen = function(){ try { return localStorage.getItem(KEY) === "done"; } catch (e) { return false; } };
+  var markSeen = function(){ try { localStorage.setItem(KEY, "done"); } catch (e) {} };
+  var wrapEl = document.querySelector(".wrap");
+
+  function startTour(){
+    if (T) return;
+    closeInfo();
+    var veil = document.createElement("div"), hole = document.createElement("div"), card = document.createElement("div");
+    veil.className = "tour-veil"; hole.className = "tour-hole"; card.className = "tour-card";
+    card.setAttribute("role", "dialog"); card.setAttribute("aria-modal", "true");
+    card.setAttribute("aria-labelledby", "tourTitle"); card.setAttribute("aria-describedby", "tourBody");
+    card.tabIndex = -1;
+    document.body.appendChild(veil); document.body.appendChild(hole); document.body.appendChild(card);
+    T = { i:0, veil:veil, hole:hole, card:card, back:document.activeElement };
+    if (wrapEl) wrapEl.inert = true;                   // the page behind can't be clicked or tabbed to
+    card.addEventListener("click", function(e){
+      var b = e.target.closest("button[data-t]"); if (!b) return;
+      var a = b.getAttribute("data-t");
+      if (a === "next") go(T.i + 1); else if (a === "back") go(T.i - 1); else endTour();
+    });
+    go(0);
+  }
+
+  function go(i){
+    if (!T) return;
+    if (i >= STEPS.length) return endTour();
+    T.i = Math.max(0, i);
+    var s = STEPS[T.i], n = STEPS.length, last = T.i === n - 1;
+    T.card.innerHTML =
+      '<div class="tour-meta"><span>' + (T.i + 1) + ' / ' + n + '</span>' +
+      '<span class="tour-prog"><i style="width:' + Math.round((T.i + 1) / n * 100) + '%"></i></span></div>' +
+      '<h3 id="tourTitle">' + s.title + '</h3><p id="tourBody">' + s.body + '</p>' +
+      '<div class="tour-acts">' +
+        (last ? '<span style="margin-right:auto"></span>' : '<button type="button" class="tbtn skip" data-t="skip">Skip tour</button>') +
+        (T.i ? '<button type="button" class="tbtn" data-t="back">Back</button>' : '') +
+        '<button type="button" class="tbtn go" data-t="next">' + (last ? "Done" : "Next") + '</button></div>';
+    var t = document.querySelector(s.sel);
+    // A scroll made here is the tour's own: the highlight should glide to the
+    // new spot, not snap the way it does when the reader scrolls.
+    T.quietUntil = performance.now() + 150;
+    if (t) bringIntoView(t);
+    place();
+    var nb = T.card.querySelector('[data-t="next"]');
+    if (nb) nb.focus({ preventScroll:true });
+  }
+
+  /** Scroll only when the target isn't already in view, leaving room for the card on a phone. */
+  function bringIntoView(t){
+    var r = t.getBoundingClientRect(), vh = window.innerHeight;
+    var phone = document.documentElement.clientWidth < 700;
+    var floor = phone ? vh * 0.52 : vh - 16;
+    if (r.top >= 16 && r.bottom <= floor) return;
+    var tall = r.height > floor - 32;
+    var y = window.scrollY + r.top - (tall || phone ? 24 : Math.max(24, (vh - r.height) / 2));
+    window.scrollTo({ top:Math.max(0, y), behavior:"auto" });
+  }
+
+  function place(){
+    if (!T) return;
+    var s = STEPS[T.i], t = document.querySelector(s.sel); if (!t) return;
+    var r = t.getBoundingClientRect(), pad = s.pad == null ? 8 : s.pad;
+    var vw = document.documentElement.clientWidth, vh = window.innerHeight;
+    var top = clamp(r.top - pad, 6, vh - 6), bottom = clamp(r.bottom + pad, 6, vh - 6);
+    var left = clamp(r.left - pad, 6, vw - 6), right = clamp(r.right + pad, 6, vw - 6);
+    var box = T.hole.style;
+    box.top = top + "px"; box.left = left + "px";
+    box.width = Math.max(0, right - left) + "px"; box.height = Math.max(0, bottom - top) + "px";
+    box.borderRadius = s.round ? "50%" : "12px";
+    var rect = { top:top, bottom:bottom, left:left, right:right, width:right - left, height:bottom - top };
+    var order = s.prefer || (rect.width > vw * 0.55 ? ["below", "above", "right", "left"] : ["below", "right", "above", "left"]);
+    placeNear(T.card, rect, order);
+  }
+
+  function endTour(){
+    if (!T) return;
+    markSeen();
+    [T.veil, T.hole, T.card].forEach(function(el){ el.remove(); });
+    if (wrapEl) wrapEl.inert = false;
+    var back = T.back; T = null;
+    document.documentElement.classList.remove("tracking");
+    var btn = $("tourBtn");
+    (back && back !== document.body && document.body.contains(back) ? back : btn).focus({ preventScroll:true });
+  }
+
+  document.addEventListener("keydown", function(e){
+    if (!T) return;
+    if (e.key === "Escape"){ e.preventDefault(); endTour(); }
+    else if (e.key === "ArrowRight"){ e.preventDefault(); go(T.i + 1); }
+    else if (e.key === "ArrowLeft"){ e.preventDefault(); go(T.i - 1); }
+    else if (e.key === "Tab"){
+      // keep keyboard focus inside the tour card while it is open
+      var f = Array.prototype.slice.call(T.card.querySelectorAll("button"));
+      if (!f.length) return;
+      var i = f.indexOf(document.activeElement);
+      e.preventDefault();
+      f[(i + (e.shiftKey ? f.length - 1 : 1) + f.length) % f.length].focus();
+    }
+  });
+
+  // Follow the page when it scrolls or resizes — instantly, not with the glide
+  // used between steps, so the highlight never trails behind what it marks.
+  var queued = false;
+  function follow(){
+    if (!T && !anchor) return;
+    if (T && performance.now() > (T.quietUntil || 0)){
+      document.documentElement.classList.add("tracking");
+      clearTimeout(tracking);
+      tracking = setTimeout(function(){ document.documentElement.classList.remove("tracking"); }, 160);
+    }
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(function(){ queued = false; if (T) place(); placePop(); });
+  }
+  window.addEventListener("scroll", follow, { passive:true });
+  window.addEventListener("resize", follow);
+
+  $("tourBtn").addEventListener("click", function(){ startTour(); });
+
+  /* ================= wiring ================= */
+  Array.prototype.forEach.call(document.querySelectorAll("input,select"), function(el){
+    el.addEventListener("input", render);
+  });
+  Array.prototype.forEach.call(document.querySelectorAll("#scen .chip"), function(b){
+    b.addEventListener("click", function(){ $("msgs").value = b.dataset.m; render(); });
+  });
+  // pointer events cover the mouse and a finger alike: tap the chart to read it
+  $("svg").addEventListener("pointermove", hover);
+  $("svg").addEventListener("pointerdown", hover);
+  $("svg").addEventListener("pointerleave", function(){ $("tip").classList.remove("on"); });
+  $("themer").addEventListener("click", function(){
+    var cur = document.documentElement.getAttribute("data-theme");
+    var dark = cur ? cur === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+    document.documentElement.setAttribute("data-theme", dark ? "light" : "dark");
+    render();
+  });
+
+  labelInfo(document);
+  cliffHeading();
+  render();
+
+  // First visit: the tour starts on its own, a moment after the page has
+  // settled. After that it waits for the button (or a link ending in #tour).
+  function autoTour(){
+    if (document.visibilityState === "visible") setTimeout(startTour, reduced ? 200 : 900);
+    else document.addEventListener("visibilitychange", function once(){
+      if (document.visibilityState !== "visible") return;
+      document.removeEventListener("visibilitychange", once);
+      setTimeout(startTour, 600);
+    });
+  }
+  if (!seen() || location.hash === "#tour") autoTour();
+})();
+</script>
+</body>
+</html>
